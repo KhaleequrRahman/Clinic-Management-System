@@ -1,5 +1,5 @@
 // ============================================
-// API Response Types
+// API Response Types updating for better type safety and clarity
 // ============================================
 
 export interface ApiResponse<T = unknown> {
