@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { doctorRepository } from "@/repositories/doctorRepository";
 import { patientRepository } from "@/repositories/patientRepository";
+import { appointmentRepository } from "@/repositories/appointmentRepository";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     // Verify this patient has visited this doctor
-    const visits = await doctorRepository.getPatientAppointmentsWithDoctor(doctor.id, patientId);
+    const visits = await appointmentRepository.getPatientAppointmentsWithDoctor(doctor.id, patientId);
     if (visits.length === 0) {
       return NextResponse.json({ success: false, error: "This patient has no visits with you" }, { status: 403 });
     }

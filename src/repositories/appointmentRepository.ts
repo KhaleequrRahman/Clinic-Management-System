@@ -478,4 +478,29 @@ export const appointmentRepository = {
       totalPatients: patientResult.count,
     };
   },
+
+  /**
+   * Get all appointments for a specific patient with a specific doctor
+   */
+  async getPatientAppointmentsWithDoctor(doctorId: number, patientId: number) {
+    return db
+      .select({
+        id: appointments.id,
+        appointmentDate: appointments.appointmentDate,
+        appointmentTime: appointments.appointmentTime,
+        status: appointments.status,
+        reason: appointments.reason,
+        symptoms: appointments.symptoms,
+        diagnosis: appointments.diagnosis,
+        notes: appointments.notes,
+        vitals: appointments.vitals,
+        followUpDate: appointments.followUpDate,
+        doctorName: doctors.name,
+        doctorSpecialization: doctors.specialization,
+      })
+      .from(appointments)
+      .innerJoin(doctors, eq(appointments.doctorId, doctors.id))
+      .where(and(eq(appointments.doctorId, doctorId), eq(appointments.patientId, patientId)))
+      .orderBy(desc(appointments.appointmentDate), desc(appointments.appointmentTime));
+  },
 };
